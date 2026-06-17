@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { CheckCircle, Droplets, Clock, MapPin, Star, Zap, Shield, Gift } from "lucide-react";
+import { CheckCircle, Droplets, Clock, Zap, Shield, Gift } from "lucide-react";
+import { StatusBadge } from "./shared/StatusBadge";
+import { StatCard } from "./shared/StatCard";
 
 const PLANS = [
   {
@@ -237,7 +239,7 @@ export function SubscriptionPage({ showMyPlans = false }: SubscriptionPageProps)
                     <div>
                       <div className="flex items-center gap-2 mb-1">
                         <h3 className="text-foreground" style={{ fontWeight: 700 }}>{sub.plan} Plan</h3>
-                        <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full" style={{ fontWeight: 600 }}>{sub.status}</span>
+                        <StatusBadge status={sub.status} />
                       </div>
                       <div className="text-muted-foreground text-xs">ID: {sub.id} · Since {sub.since}</div>
                     </div>
@@ -246,18 +248,9 @@ export function SubscriptionPage({ showMyPlans = false }: SubscriptionPageProps)
                     </div>
                   </div>
                   <div className="grid grid-cols-3 gap-3 mb-4">
-                    <div className="bg-secondary rounded-xl p-3 text-center">
-                      <div className="text-foreground" style={{ fontWeight: 700, fontSize: "1.2rem" }}>{sub.delivered}</div>
-                      <div className="text-muted-foreground text-xs">Delivered</div>
-                    </div>
-                    <div className="bg-secondary rounded-xl p-3 text-center">
-                      <div className="text-foreground text-sm" style={{ fontWeight: 600 }}>{sub.nextDelivery}</div>
-                      <div className="text-muted-foreground text-xs">Next delivery</div>
-                    </div>
-                    <div className="bg-secondary rounded-xl p-3 text-center">
-                      <div className="text-foreground text-sm" style={{ fontWeight: 600 }}>{sub.area}</div>
-                      <div className="text-muted-foreground text-xs">Location</div>
-                    </div>
+                    <StatCard value={String(sub.delivered)} label="Delivered" />
+                    <StatCard value={sub.nextDelivery} label="Next delivery" />
+                    <StatCard value={sub.area} label="Location" />
                   </div>
                   <div className="flex gap-2">
                     <button className="flex-1 border border-border text-foreground py-2 rounded-xl text-sm cursor-pointer hover:bg-muted transition-colors" style={{ fontWeight: 500 }}>
