@@ -4,6 +4,18 @@ import { TANKERS, type Tanker } from "../data/tankers";
 import { TIME_SLOTS, AREAS, FORM_INPUT_CLASS } from "../data/constants";
 import { PageHeader } from "./shared/PageHeader";
 
+function sanitizeText(input: string): string {
+  return input.replace(/[<>"'&]/g, "").trim();
+}
+
+function isValidPhone(phone: string): boolean {
+  return /^[6-9]\d{9}$/.test(phone);
+}
+
+function isValidUpiId(upi: string): boolean {
+  return /^[\w.\-]+@[\w]+$/.test(upi);
+}
+
 interface BookingPageProps {
   selectedTanker: Tanker | null;
   onBack: () => void;
@@ -41,7 +53,7 @@ export function BookingPage({ selectedTanker, onBack, onOrderPlaced }: BookingPa
   }
 
   const canProceedStep1 = tankerId && date && timeSlot;
-  const canProceedStep2 = area && address && name && phone.length === 10;
+  const canProceedStep2 = area && address.length >= 5 && name.length >= 2 && isValidPhone(phone);
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
@@ -153,7 +165,8 @@ export function BookingPage({ selectedTanker, onBack, onOrderPlaced }: BookingPa
                   type="text"
                   placeholder="e.g. Priya Sharma"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  maxLength={100}
+                  onChange={(e) => setName(sanitizeText(e.target.value))}
                   className={FORM_INPUT_CLASS}
                 />
               </div>
@@ -188,7 +201,8 @@ export function BookingPage({ selectedTanker, onBack, onOrderPlaced }: BookingPa
                 <textarea
                   placeholder="House/Flat No., Street, Landmark"
                   value={address}
-                  onChange={(e) => setAddress(e.target.value)}
+                  maxLength={300}
+                  onChange={(e) => setAddress(sanitizeText(e.target.value))}
                   rows={3}
                   className={`${FORM_INPUT_CLASS} resize-none`}
                 />
@@ -243,9 +257,13 @@ export function BookingPage({ selectedTanker, onBack, onOrderPlaced }: BookingPa
                     type="text"
                     placeholder="yourname@upi"
                     value={upiId}
-                    onChange={(e) => setUpiId(e.target.value)}
-                    className={FORM_INPUT_CLASS}
+                    maxLength={50}
+                    onChange={(e) => setUpiId(e.target.value.replace(/[^a-zA-Z0-9.@_-]/g, ""))}
+                    className={`${FORM_INPUT_CLASS} ${upiId && !isValidUpiId(upiId) ? "border-red-400" : ""}`}
                   />
+                  {upiId && !isValidUpiId(upiId) && (
+                    <p className="text-red-500 text-xs mt-1">Enter a valid UPI ID (e.g. name@upi)</p>
+                  )}
                 </div>
               )}
               <div className="flex gap-3">
@@ -258,8 +276,8 @@ export function BookingPage({ selectedTanker, onBack, onOrderPlaced }: BookingPa
                 </button>
                 <button
                   onClick={handlePlaceOrder}
-                  disabled={isPlacing}
-                  className="flex-1 bg-primary text-primary-foreground py-3 rounded-xl cursor-pointer hover:opacity-90 transition-opacity disabled:opacity-70"
+                  disabled={isPlacing || (paymentMethod === "upi" && !isValidUpiId(upiId))}
+                  className="flex-1 bg-primary text-primary-foreground py-3 rounded-xl cursor-pointer hover:opacity-90 transition-opacity disabled:opacity-70 disabled:cursor-not-allowed"
                   style={{ fontWeight: 600 }}
                 >
                   {isPlacing ? "Placing Order…" : `Pay ₹${total}`}
