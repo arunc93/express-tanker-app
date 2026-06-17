@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { CheckCircle, Circle, Truck, Droplets, MapPin, Phone, Clock, Star } from "lucide-react";
+import { CheckCircle, Circle, Truck, Droplets, MapPin, Phone, Clock, Star, AlertCircle } from "lucide-react";
 
 const STAGES = [
   { id: 0, label: "Order Confirmed", sub: "Payment received successfully", icon: <CheckCircle size={18} />, time: "10:02 AM" },
@@ -20,6 +20,7 @@ export function TrackingPage({ orderId, onRate }: TrackingPageProps) {
   const [rating, setRating] = useState(0);
   const [rated, setRated] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [ratingError, setRatingError] = useState<string | null>(null);
 
   useEffect(() => {
     if (currentStage >= 4) return;
@@ -48,9 +49,16 @@ export function TrackingPage({ orderId, onRate }: TrackingPageProps) {
 
   function handleRating(r: number) {
     setRating(r);
+    setRatingError(null);
     setTimeout(() => {
-      setRated(true);
-      onRate();
+      try {
+        setRated(true);
+        onRate();
+      } catch (err) {
+        console.error("[TrackingPage] Failed to submit rating:", err);
+        setRated(false);
+        setRatingError(err instanceof Error ? err.message : "Failed to submit rating. Please try again.");
+      }
     }, 600);
   }
 
@@ -191,6 +199,12 @@ export function TrackingPage({ orderId, onRate }: TrackingPageProps) {
               </button>
             ))}
           </div>
+          {ratingError && (
+            <div className="flex items-center justify-center gap-2 text-red-600 text-sm mt-3">
+              <AlertCircle size={14} />
+              <span>{ratingError}</span>
+            </div>
+          )}
         </div>
       )}
 

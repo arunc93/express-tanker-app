@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Droplets, Clock, MapPin, Shield, Star, ChevronRight, Phone, Truck } from "lucide-react";
+import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 const TANKERS = [
   {
@@ -212,7 +213,7 @@ export function HomePage({ onBook }: HomePageProps) {
                 onMouseLeave={() => setHoveredTanker(null)}
               >
                 <div className="relative">
-                  <img
+                  <ImageWithFallback
                     src={t.image}
                     alt={t.name}
                     className="w-full h-36 object-cover"

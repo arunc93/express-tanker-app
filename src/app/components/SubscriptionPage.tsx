@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle, Droplets, Clock, MapPin, Star, Zap, Shield, Gift } from "lucide-react";
+import { CheckCircle, Droplets, Clock, MapPin, Star, Zap, Shield, Gift, AlertCircle } from "lucide-react";
 
 const PLANS = [
   {
@@ -65,12 +65,20 @@ export function SubscriptionPage({ showMyPlans = false }: SubscriptionPageProps)
   const [selected, setSelected] = useState<string | null>(null);
   const [subscribed, setSubscribed] = useState<string | null>(null);
   const [billing, setBilling] = useState<"monthly" | "quarterly">("monthly");
+  const [subscribeError, setSubscribeError] = useState<string | null>(null);
 
   function handleSubscribe(planId: string) {
     setSelected(planId);
+    setSubscribeError(null);
     setTimeout(() => {
-      setSubscribed(planId);
-      setTab("my");
+      try {
+        setSubscribed(planId);
+        setTab("my");
+      } catch (err) {
+        console.error("[SubscriptionPage] Failed to subscribe:", err);
+        setSelected(null);
+        setSubscribeError(err instanceof Error ? err.message : "Failed to activate subscription. Please try again.");
+      }
     }, 1200);
   }
 
@@ -136,6 +144,13 @@ export function SubscriptionPage({ showMyPlans = false }: SubscriptionPageProps)
               </button>
             </div>
           </div>
+
+          {subscribeError && (
+            <div className="flex items-center gap-2 text-red-600 bg-red-50 border border-red-200 rounded-xl p-3 text-sm mb-6">
+              <AlertCircle size={16} className="flex-shrink-0" />
+              <span>{subscribeError}</span>
+            </div>
+          )}
 
           {/* Plan cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
