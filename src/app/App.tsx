@@ -106,6 +106,7 @@ export default function App() {
             </button>
             <a
               href="tel:18001234567"
+              rel="noopener noreferrer"
               className="hidden sm:flex items-center gap-1.5 border border-border text-foreground px-3 py-1.5 rounded-lg text-xs cursor-pointer hover:bg-secondary transition-colors"
               style={{ fontWeight: 500 }}
             >

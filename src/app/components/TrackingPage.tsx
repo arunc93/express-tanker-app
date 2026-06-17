@@ -163,6 +163,7 @@ export function TrackingPage({ orderId, onRate }: TrackingPageProps) {
         </div>
         <a
           href="tel:+919876543210"
+          rel="noopener noreferrer"
           className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-xl text-sm cursor-pointer hover:opacity-90 transition-opacity"
           style={{ fontWeight: 600 }}
         >
