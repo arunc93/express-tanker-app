@@ -17,7 +17,7 @@ describe("TrackingPage", () => {
   it("renders the order ID", () => {
     render(<TrackingPage orderId="JSD-934521" onRate={onRate} />);
     expect(screen.getByText("Track Your Order")).toBeInTheDocument();
-    expect(screen.getByText("JSD-934521")).toBeInTheDocument();
+    expect(screen.getByText(/JSD-934521/)).toBeInTheDocument();
   });
 
   it("shows all delivery stages", () => {

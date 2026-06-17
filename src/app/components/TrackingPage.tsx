@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import { CheckCircle, Circle, Truck, Droplets, MapPin, Phone, Clock, Star } from "lucide-react";
+import { BRAND_GRADIENT } from "../data/constants";
+import { PageHeader } from "./shared/PageHeader";
+import { StarRating } from "./shared/StarRating";
 
 const STAGES = [
   { id: 0, label: "Order Confirmed", sub: "Payment received successfully", icon: <CheckCircle size={18} />, time: "10:02 AM" },
@@ -61,15 +64,12 @@ export function TrackingPage({ orderId, onRate }: TrackingPageProps) {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
-      <div className="mb-6">
-        <h2 className="text-foreground mb-1" style={{ fontWeight: 700, fontSize: "1.4rem" }}>Track Your Order</h2>
-        <p className="text-muted-foreground text-sm">Order ID: <span style={{ fontWeight: 600 }}>{orderId}</span></p>
-      </div>
+      <PageHeader title="Track Your Order" subtitle={`Order ID: ${orderId}`} />
 
       {/* ETA Banner */}
       <div
         className="rounded-2xl p-5 mb-6 text-white flex items-center justify-between"
-        style={{ background: "linear-gradient(135deg, #0560a6, #06b6d4)" }}
+        style={{ background: BRAND_GRADIENT }}
       >
         <div>
           <div className="text-blue-100 text-xs mb-1" style={{ fontWeight: 500 }}>
@@ -163,6 +163,7 @@ export function TrackingPage({ orderId, onRate }: TrackingPageProps) {
         </div>
         <a
           href="tel:+919876543210"
+          rel="noopener noreferrer"
           className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-xl text-sm cursor-pointer hover:opacity-90 transition-opacity"
           style={{ fontWeight: 600 }}
         >
@@ -176,21 +177,7 @@ export function TrackingPage({ orderId, onRate }: TrackingPageProps) {
         <div className="bg-card rounded-2xl border border-primary/30 p-5 text-center">
           <h3 className="text-foreground mb-1" style={{ fontWeight: 700 }}>Rate your delivery</h3>
           <p className="text-muted-foreground text-sm mb-4">How was your experience?</p>
-          <div className="flex justify-center gap-2">
-            {[1, 2, 3, 4, 5].map((r) => (
-              <button
-                key={r}
-                onClick={() => handleRating(r)}
-                className="transition-transform hover:scale-110 cursor-pointer"
-              >
-                <Star
-                  size={32}
-                  className={r <= rating ? "text-amber-400" : "text-muted"}
-                  fill={r <= rating ? "currentColor" : "none"}
-                />
-              </button>
-            ))}
-          </div>
+          <StarRating rating={rating} size={32} interactive onRate={handleRating} />
         </div>
       )}
 

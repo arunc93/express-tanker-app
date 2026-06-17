@@ -232,6 +232,10 @@ describe("BookingPage", () => {
     );
     fireEvent.click(screen.getByText("Continue →"));
 
+    await user.type(
+      screen.getByPlaceholderText("yourname@upi"),
+      "testuser@upi"
+    );
     fireEvent.click(screen.getByText("Pay ₹573"));
     expect(screen.getByText("Placing Order…")).toBeInTheDocument();
 
