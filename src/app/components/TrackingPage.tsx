@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { CheckCircle, Circle, Truck, Droplets, MapPin, Phone, Clock } from "lucide-react";
+import { CheckCircle, Circle, Truck, Droplets, MapPin, Phone, Clock, AlertCircle } from "lucide-react";
 import { BRAND_GRADIENT } from "../data/constants";
 import { PageHeader } from "./shared/PageHeader";
 import { StarRating } from "./shared/StarRating";
@@ -23,6 +23,7 @@ export function TrackingPage({ orderId, onRate }: TrackingPageProps) {
   const [rating, setRating] = useState(0);
   const [rated, setRated] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [ratingError, setRatingError] = useState<string | null>(null);
 
   useEffect(() => {
     if (currentStage >= 4) return;
@@ -51,9 +52,16 @@ export function TrackingPage({ orderId, onRate }: TrackingPageProps) {
 
   function handleRating(r: number) {
     setRating(r);
+    setRatingError(null);
     setTimeout(() => {
-      setRated(true);
-      onRate();
+      try {
+        setRated(true);
+        onRate();
+      } catch (err) {
+        console.error("[TrackingPage] Failed to submit rating:", err);
+        setRated(false);
+        setRatingError(err instanceof Error ? err.message : "Failed to submit rating. Please try again.");
+      }
     }, 600);
   }
 
@@ -178,6 +186,12 @@ export function TrackingPage({ orderId, onRate }: TrackingPageProps) {
           <h3 className="text-foreground mb-1" style={{ fontWeight: 700 }}>Rate your delivery</h3>
           <p className="text-muted-foreground text-sm mb-4">How was your experience?</p>
           <StarRating rating={rating} size={32} interactive onRate={handleRating} />
+          {ratingError && (
+            <div className="flex items-center justify-center gap-2 text-red-600 text-sm mt-3">
+              <AlertCircle size={14} />
+              <span>{ratingError}</span>
+            </div>
+          )}
         </div>
       )}
 

@@ -7,6 +7,7 @@ import { SubscriptionPage } from "./components/SubscriptionPage";
 import { OrderHistory } from "./components/OrderHistory";
 import { DEFAULT_TANKER } from "./data/tankers";
 import { BRAND_GRADIENT } from "./data/constants";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 
 {/* MARKER-MAKE-KIT-INVOKED */}
 
@@ -149,22 +150,24 @@ export default function App() {
 
       {/* Main content */}
       <main>
-        {page === "home" && <HomePage onBook={handleBook} />}
-        {page === "book" && (
-          <BookingPage
-            selectedTanker={selectedTanker}
-            onBack={() => setPage("home")}
-            onOrderPlaced={handleOrderPlaced}
-          />
-        )}
-        {page === "track" && (
-          <TrackingPage
-            orderId={activeOrderId ?? "JSD-934521"}
-            onRate={() => setNotifications((n) => Math.max(0, n - 1))}
-          />
-        )}
-        {page === "subscribe" && <SubscriptionPage />}
-        {page === "history" && <OrderHistory onReorder={() => navigate("book")} />}
+        <ErrorBoundary>
+          {page === "home" && <HomePage onBook={handleBook} />}
+          {page === "book" && (
+            <BookingPage
+              selectedTanker={selectedTanker}
+              onBack={() => setPage("home")}
+              onOrderPlaced={handleOrderPlaced}
+            />
+          )}
+          {page === "track" && (
+            <TrackingPage
+              orderId={activeOrderId ?? "JSD-934521"}
+              onRate={() => setNotifications((n) => Math.max(0, n - 1))}
+            />
+          )}
+          {page === "subscribe" && <SubscriptionPage />}
+          {page === "history" && <OrderHistory onReorder={() => navigate("book")} />}
+        </ErrorBoundary>
       </main>
 
       {/* Bottom nav (mobile) */}

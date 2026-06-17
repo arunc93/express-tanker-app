@@ -3,6 +3,7 @@ import { Droplets, Clock, MapPin, Shield, Star, ChevronRight, Phone, Truck } fro
 import { TANKERS, type TankerWithDetails } from "../data/tankers";
 import { BRAND_GRADIENT } from "../data/constants";
 import { StarRating } from "./shared/StarRating";
+import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 const TESTIMONIALS = [
   {
@@ -160,7 +161,7 @@ export function HomePage({ onBook }: HomePageProps) {
                 onMouseLeave={() => setHoveredTanker(null)}
               >
                 <div className="relative">
-                  <img
+                  <ImageWithFallback
                     src={t.image}
                     alt={t.name}
                     className="w-full h-36 object-cover"
