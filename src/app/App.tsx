@@ -61,7 +61,7 @@ export default function App() {
               <Droplets size={16} className="text-white" />
             </div>
             <div>
-              <span className="text-foreground" style={{ fontWeight: 700, fontSize: "1rem" }}>JalSeva</span>
+              <span className="text-foreground" style={{ fontWeight: 700, fontSize: "1rem" }}>ExpressTanker</span>
               <span className="hidden sm:inline text-muted-foreground text-xs ml-1">Bengaluru</span>
             </div>
           </button>
@@ -142,13 +142,13 @@ export default function App() {
       {/* Announcement banner */}
       {page === "home" && (
         <div className="bg-accent text-accent-foreground text-center text-xs py-2" style={{ fontWeight: 500 }}>
-          🌊 Summer water shortage in Bengaluru — JalSeva guarantees delivery. <span className="underline cursor-pointer">Subscribe now</span>
+          🌊 Summer water shortage in Bengaluru — JalSeva guarantees delivery. <span className="underline cursor-pointer" onClick={() => navigate("subscribe")}>Subscribe now</span>
         </div>
       )}
 
       {/* Main content */}
       <main>
-        {page === "home" && <HomePage onBook={handleBook} />}
+        {page === "home" && <HomePage onBook={handleBook} navigate={navigate} />}
         {page === "book" && (
           <BookingPage
             selectedTanker={selectedTanker}

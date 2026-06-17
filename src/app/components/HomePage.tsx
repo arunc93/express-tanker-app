@@ -48,7 +48,8 @@ const TANKERS = [
     capacity: "6000 Litres",
     price: 1799,
     delivery: "Scheduled",
-    image: "https://images.unsplash.com/photo-1560472355-536de3962603?w=400&h=260&fit=crop&auto=format",
+    //image: "https://images.unsplash.com/photo-1560472355-536de3962603?w=400&h=260&fit=crop&auto=format",
+    image: "https://images.unsplash.com/photo-1670355087615-3551742c15df?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     tag: "For construction & bulk",
     rating: 4.6,
     reviews: 94,
@@ -82,9 +83,10 @@ const TESTIMONIALS = [
 
 interface HomePageProps {
   onBook: (tanker: typeof TANKERS[0]) => void;
+  navigate: (page: "home" | "book" | "track" | "subscribe" | "history") => void;
 }
 
-export function HomePage({ onBook }: HomePageProps) {
+export function HomePage({ onBook, navigate }: HomePageProps) {
   const [hoveredTanker, setHoveredTanker] = useState<number | null>(null);
 
   return (
@@ -121,6 +123,7 @@ export function HomePage({ onBook }: HomePageProps) {
                 Book Now
               </button>
               <button
+                onClick={() => navigate("subscribe")}
                 className="border border-white/40 text-white px-6 py-3 rounded-xl cursor-pointer hover:bg-white/10 transition-all"
                 style={{ fontWeight: 500 }}
               >
