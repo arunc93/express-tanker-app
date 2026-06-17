@@ -1,9 +1,13 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { OrderHistory } from "../OrderHistory";
 
 describe("OrderHistory", () => {
-  const onReorder = vi.fn();
+  let onReorder: ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    onReorder = vi.fn();
+  });
 
   it("renders the page title", () => {
     render(<OrderHistory onReorder={onReorder} />);

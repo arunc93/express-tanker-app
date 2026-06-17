@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MapPin, Clock, Droplets, ChevronLeft, CheckCircle, Calendar, CreditCard, User, Phone } from "lucide-react";
+import { MapPin, Clock, Droplets, ChevronLeft, CheckCircle, Calendar, CreditCard, User, Phone, AlertCircle } from "lucide-react";
 import { TANKERS, type Tanker } from "../data/tankers";
 import { TIME_SLOTS, AREAS, FORM_INPUT_CLASS } from "../data/constants";
 import { PageHeader } from "./shared/PageHeader";
@@ -34,6 +34,7 @@ export function BookingPage({ selectedTanker, onBack, onOrderPlaced }: BookingPa
   const [paymentMethod, setPaymentMethod] = useState("upi");
   const [upiId, setUpiId] = useState("");
   const [isPlacing, setIsPlacing] = useState(false);
+  const [orderError, setOrderError] = useState<string | null>(null);
 
   const tanker = TANKERS.find((t) => t.id === tankerId) ?? TANKERS[1];
   const tax = Math.round(tanker.price * 0.05);
@@ -45,10 +46,17 @@ export function BookingPage({ selectedTanker, onBack, onOrderPlaced }: BookingPa
 
   function handlePlaceOrder() {
     setIsPlacing(true);
+    setOrderError(null);
     setTimeout(() => {
-      const orderId = "JSD" + Math.floor(100000 + Math.random() * 900000);
-      setIsPlacing(false);
-      onOrderPlaced(orderId);
+      try {
+        const orderId = "JSD" + Math.floor(100000 + Math.random() * 900000);
+        setIsPlacing(false);
+        onOrderPlaced(orderId);
+      } catch (err) {
+        console.error("[BookingPage] Failed to place order:", err);
+        setIsPlacing(false);
+        setOrderError(err instanceof Error ? err.message : "Failed to place order. Please try again.");
+      }
     }, 1800);
   }
 
@@ -283,6 +291,12 @@ export function BookingPage({ selectedTanker, onBack, onOrderPlaced }: BookingPa
                   {isPlacing ? "Placing Order…" : `Pay ₹${total}`}
                 </button>
               </div>
+              {orderError && (
+                <div className="flex items-center gap-2 text-red-600 bg-red-50 border border-red-200 rounded-xl p-3 text-sm">
+                  <AlertCircle size={16} className="flex-shrink-0" />
+                  <span>{orderError}</span>
+                </div>
+              )}
             </div>
           )}
         </div>
