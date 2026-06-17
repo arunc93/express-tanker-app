@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Droplets, Home, BookOpen, MapPin, Star, History, Menu, X, Phone, Bell } from "lucide-react";
+import { LoginPage } from "./components/LoginPage";
 import { HomePage } from "./components/HomePage";
 import { BookingPage } from "./components/BookingPage";
 import { TrackingPage } from "./components/TrackingPage";
@@ -22,6 +23,7 @@ const NAV_ITEMS = [
 
 export default function App() {
   const [page, setPage] = useState<Page>("home");
+  const [userMobile, setUserMobile] = useState<string | null>(null);
   const [selectedTanker, setSelectedTanker] = useState(TANKER_DEFAULT);
   const [activeOrderId, setActiveOrderId] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -39,9 +41,17 @@ export default function App() {
     setNotifications((n) => n + 1);
   }
 
+  function handleLogin(mobile: string) {
+    setUserMobile(mobile);
+  }
+
   function navigate(p: Page) {
     setPage(p);
     setMobileMenuOpen(false);
+  }
+
+  if (!userMobile) {
+    return <LoginPage onLogin={handleLogin} />;
   }
 
   return (
@@ -191,7 +201,7 @@ export default function App() {
                 <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, #0560a6, #06b6d4)" }}>
                   <Droplets size={14} className="text-white" />
                 </div>
-                <span className="text-white" style={{ fontWeight: 700 }}>JalSeva</span>
+                <span className="text-white" style={{ fontWeight: 700 }}>ExpressTanker</span>
               </div>
               <p className="text-muted-foreground text-xs leading-relaxed">Bengaluru's most trusted water tanker delivery service. BIS certified, GPS tracked, 24/7 support.</p>
             </div>
@@ -204,14 +214,24 @@ export default function App() {
                 <div className="text-white text-sm mb-3" style={{ fontWeight: 600 }}>{col.title}</div>
                 <div className="space-y-2">
                   {col.links.map((link) => (
-                    <div key={link} className="text-muted-foreground text-xs cursor-pointer hover:text-white transition-colors">{link}</div>
+                    <div 
+                      key={link} 
+                      className="text-muted-foreground text-xs cursor-pointer hover:text-white transition-colors"
+                      onClick={() => {
+                        if (link === "Book Tanker") navigate("book");
+                        else if (link === "Monthly Plans") navigate("subscribe");
+                        else if (link === "Track Order") navigate("track");
+                      }}
+                    >
+                      {link}
+                    </div>
                   ))}
                 </div>
               </div>
             ))}
           </div>
           <div className="border-t border-border/30 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
-            <span>© 2025 JalSeva Technologies Pvt. Ltd. · Bengaluru, Karnataka</span>
+            <span>© 2025 Rubbish Technologies Pvt. Ltd. · Bengaluru, Karnataka</span>
             <span>All water BIS 10500 certified · BBMP licensed operator</span>
           </div>
         </div>
