@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle, Droplets, Clock, Zap, Shield, Gift, AlertCircle } from "lucide-react";
+import { CheckCircle, Droplets, Clock, Zap, Shield, Gift, Star, AlertCircle } from "lucide-react";
 import { StatusBadge } from "./shared/StatusBadge";
 import { StatCard } from "./shared/StatCard";
 

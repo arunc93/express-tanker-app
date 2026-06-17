@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { CheckCircle, Circle, Truck, Droplets, MapPin, Phone, Clock, AlertCircle } from "lucide-react";
+import { CheckCircle, Circle, Truck, Droplets, MapPin, Phone, Clock, Star, AlertCircle } from "lucide-react";
 import { BRAND_GRADIENT } from "../data/constants";
 import { PageHeader } from "./shared/PageHeader";
 import { StarRating } from "./shared/StarRating";
