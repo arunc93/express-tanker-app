@@ -1,30 +1,11 @@
 import { useState } from "react";
 import { MapPin, Clock, Droplets, ChevronLeft, CheckCircle, Calendar, CreditCard, User, Phone, AlertCircle } from "lucide-react";
-
-const TANKERS = [
-  { id: 1, name: "Mini Tanker", capacity: "500 Litres", price: 299, delivery: "2-3 hrs" },
-  { id: 2, name: "Standard Tanker", capacity: "1000 Litres", price: 499, delivery: "1-2 hrs" },
-  { id: 3, name: "Large Tanker", capacity: "3000 Litres", price: 999, delivery: "Same day" },
-  { id: 4, name: "Mega Tanker", capacity: "6000 Litres", price: 1799, delivery: "Scheduled" },
-];
-
-const TIME_SLOTS = [
-  "06:00 AM – 08:00 AM",
-  "08:00 AM – 10:00 AM",
-  "10:00 AM – 12:00 PM",
-  "12:00 PM – 02:00 PM",
-  "02:00 PM – 04:00 PM",
-  "04:00 PM – 06:00 PM",
-];
-
-const AREAS = [
-  "Koramangala", "Indiranagar", "Whitefield", "HSR Layout",
-  "BTM Layout", "Jayanagar", "JP Nagar", "Marathahalli",
-  "Yelahanka", "Hebbal", "Electronic City", "Sarjapur",
-];
+import { TANKERS, type Tanker } from "../data/tankers";
+import { TIME_SLOTS, AREAS, FORM_INPUT_CLASS } from "../data/constants";
+import { PageHeader } from "./shared/PageHeader";
 
 interface BookingPageProps {
-  selectedTanker: typeof TANKERS[0] | null;
+  selectedTanker: Tanker | null;
   onBack: () => void;
   onOrderPlaced: (orderId: string) => void;
 }
@@ -75,8 +56,9 @@ export function BookingPage({ selectedTanker, onBack, onOrderPlaced }: BookingPa
       <button onClick={onBack} className="flex items-center gap-2 text-primary text-sm mb-6 cursor-pointer hover:opacity-70 transition-opacity" style={{ fontWeight: 500 }}>
         <ChevronLeft size={16} /> Back
       </button>
-      <h2 className="text-foreground mb-1" style={{ fontWeight: 700, fontSize: "1.4rem" }}>Book Water Tanker</h2>
-      <p className="text-muted-foreground text-sm mb-8">Fast delivery across Bengaluru</p>
+      <div className="mb-8">
+        <PageHeader title="Book Water Tanker" subtitle="Fast delivery across Bengaluru" />
+      </div>
 
       {/* Step indicator */}
       <div className="flex items-center gap-0 mb-8">
@@ -135,7 +117,7 @@ export function BookingPage({ selectedTanker, onBack, onOrderPlaced }: BookingPa
                   min={minDate}
                   max={maxDate}
                   onChange={(e) => setDate(e.target.value)}
-                  className="w-full border border-border rounded-xl px-4 py-2.5 text-sm bg-input-background focus:outline-none focus:ring-2 focus:ring-ring text-foreground"
+                  className={FORM_INPUT_CLASS}
                 />
               </div>
 
@@ -180,7 +162,7 @@ export function BookingPage({ selectedTanker, onBack, onOrderPlaced }: BookingPa
                   placeholder="e.g. Priya Sharma"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full border border-border rounded-xl px-4 py-2.5 text-sm bg-input-background focus:outline-none focus:ring-2 focus:ring-ring text-foreground"
+                  className={FORM_INPUT_CLASS}
                 />
               </div>
               <div>
@@ -193,7 +175,7 @@ export function BookingPage({ selectedTanker, onBack, onOrderPlaced }: BookingPa
                   value={phone}
                   maxLength={10}
                   onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
-                  className="w-full border border-border rounded-xl px-4 py-2.5 text-sm bg-input-background focus:outline-none focus:ring-2 focus:ring-ring text-foreground"
+                  className={FORM_INPUT_CLASS}
                 />
               </div>
               <div>
@@ -203,7 +185,7 @@ export function BookingPage({ selectedTanker, onBack, onOrderPlaced }: BookingPa
                 <select
                   value={area}
                   onChange={(e) => setArea(e.target.value)}
-                  className="w-full border border-border rounded-xl px-4 py-2.5 text-sm bg-input-background focus:outline-none focus:ring-2 focus:ring-ring text-foreground"
+                  className={FORM_INPUT_CLASS}
                 >
                   <option value="">Select area</option>
                   {AREAS.map((a) => <option key={a} value={a}>{a}</option>)}
@@ -216,7 +198,7 @@ export function BookingPage({ selectedTanker, onBack, onOrderPlaced }: BookingPa
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   rows={3}
-                  className="w-full border border-border rounded-xl px-4 py-2.5 text-sm bg-input-background focus:outline-none focus:ring-2 focus:ring-ring text-foreground resize-none"
+                  className={`${FORM_INPUT_CLASS} resize-none`}
                 />
               </div>
               <div className="flex gap-3">
@@ -270,7 +252,7 @@ export function BookingPage({ selectedTanker, onBack, onOrderPlaced }: BookingPa
                     placeholder="yourname@upi"
                     value={upiId}
                     onChange={(e) => setUpiId(e.target.value)}
-                    className="w-full border border-border rounded-xl px-4 py-2.5 text-sm bg-input-background focus:outline-none focus:ring-2 focus:ring-ring text-foreground"
+                    className={FORM_INPUT_CLASS}
                   />
                 </div>
               )}

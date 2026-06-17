@@ -1,61 +1,9 @@
 import { useState } from "react";
 import { Droplets, Clock, MapPin, Shield, Star, ChevronRight, Phone, Truck } from "lucide-react";
+import { TANKERS, type TankerWithDetails } from "../data/tankers";
+import { BRAND_GRADIENT } from "../data/constants";
+import { StarRating } from "./shared/StarRating";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-
-const TANKERS = [
-  {
-    id: 1,
-    name: "Mini Tanker",
-    capacity: "500 Litres",
-    price: 299,
-    delivery: "2-3 hrs",
-    //image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=260&fit=crop&auto=format",
-    //image: "https://unsplash.com/photos/a-red-tractor-pulling-a-blue-trailer-down-a-street-fKXAjJoj3KM",
-    image: "https://images.unsplash.com/photo-1718218722121-5b15e91aef8e?q=80&w=1985&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    tag: "Best for apartments",
-    rating: 4.7,
-    reviews: 238,
-    color: "#0ea5e9",
-  },
-  {
-    id: 2,
-    name: "Standard Tanker",
-    capacity: "1000 Litres",
-    price: 499,
-    delivery: "1-2 hrs",
-    //image: "https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=400&h=260&fit=crop&auto=format",
-    image: "https://images.unsplash.com/photo-1737770612497-854f4a7d3e8c?q=80&w=1346&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    tag: "Most Popular",
-    rating: 4.9,
-    reviews: 512,
-    color: "#0560a6",
-  },
-  {
-    id: 3,
-    name: "Large Tanker",
-    capacity: "3000 Litres",
-    price: 999,
-    delivery: "Same day",
-    //image: "https://images.unsplash.com/photo-1545816250-0085c0b12aea?w=400&h=260&fit=crop&auto=format",
-    image: "https://images.unsplash.com/photo-1695601510327-1553ba5f8bb4?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    tag: "Ideal for villas & offices",
-    rating: 4.8,
-    reviews: 167,
-    color: "#06b6d4",
-  },
-  {
-    id: 4,
-    name: "Mega Tanker",
-    capacity: "6000 Litres",
-    price: 1799,
-    delivery: "Scheduled",
-    image: "https://images.unsplash.com/photo-1560472355-536de3962603?w=400&h=260&fit=crop&auto=format",
-    tag: "For construction & bulk",
-    rating: 4.6,
-    reviews: 94,
-    color: "#0c1a2e",
-  },
-];
 
 const TESTIMONIALS = [
   {
@@ -82,7 +30,7 @@ const TESTIMONIALS = [
 ];
 
 interface HomePageProps {
-  onBook: (tanker: typeof TANKERS[0]) => void;
+  onBook: (tanker: TankerWithDetails) => void;
 }
 
 export function HomePage({ onBook }: HomePageProps) {
@@ -93,7 +41,7 @@ export function HomePage({ onBook }: HomePageProps) {
       {/* Hero */}
       <section
         className="relative overflow-hidden"
-        style={{ background: "linear-gradient(135deg, #0560a6 0%, #0284c7 50%, #06b6d4 100%)" }}
+        style={{ background: BRAND_GRADIENT }}
       >
         <div
           className="absolute inset-0 opacity-10"
@@ -304,10 +252,8 @@ export function HomePage({ onBook }: HomePageProps) {
                     <div className="text-muted-foreground text-xs">{t.area}, Bengaluru</div>
                   </div>
                 </div>
-                <div className="flex gap-0.5 mb-3">
-                  {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star key={i} size={14} className="text-amber-400" fill="currentColor" />
-                  ))}
+                <div className="mb-3">
+                  <StarRating rating={t.rating} size={14} />
                 </div>
                 <p className="text-muted-foreground text-sm leading-relaxed">"{t.text}"</p>
               </div>

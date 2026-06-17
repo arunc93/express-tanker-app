@@ -1,17 +1,17 @@
 import { useState } from "react";
-import { Droplets, Home, BookOpen, MapPin, Star, History, Menu, X, Phone, Bell } from "lucide-react";
+import { Droplets, Home, MapPin, Star, History, Menu, X, Phone, Bell } from "lucide-react";
 import { HomePage } from "./components/HomePage";
 import { BookingPage } from "./components/BookingPage";
 import { TrackingPage } from "./components/TrackingPage";
 import { SubscriptionPage } from "./components/SubscriptionPage";
 import { OrderHistory } from "./components/OrderHistory";
+import { DEFAULT_TANKER } from "./data/tankers";
+import { BRAND_GRADIENT } from "./data/constants";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 
 {/* MARKER-MAKE-KIT-INVOKED */}
 
 type Page = "home" | "book" | "track" | "subscribe" | "history";
-
-const TANKER_DEFAULT = { id: 2, name: "Standard Tanker", capacity: "1000 Litres", price: 499, delivery: "1-2 hrs" };
 
 const NAV_ITEMS = [
   { id: "home" as Page, label: "Home", icon: <Home size={18} /> },
@@ -23,12 +23,12 @@ const NAV_ITEMS = [
 
 export default function App() {
   const [page, setPage] = useState<Page>("home");
-  const [selectedTanker, setSelectedTanker] = useState(TANKER_DEFAULT);
+  const [selectedTanker, setSelectedTanker] = useState(DEFAULT_TANKER);
   const [activeOrderId, setActiveOrderId] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [notifications, setNotifications] = useState(2);
 
-  function handleBook(tanker: typeof TANKER_DEFAULT) {
+  function handleBook(tanker: typeof DEFAULT_TANKER) {
     setSelectedTanker(tanker);
     setPage("book");
     setMobileMenuOpen(false);
@@ -57,7 +57,7 @@ export default function App() {
           >
             <div
               className="w-8 h-8 rounded-lg flex items-center justify-center"
-              style={{ background: "linear-gradient(135deg, #0560a6, #06b6d4)" }}
+              style={{ background: BRAND_GRADIENT }}
             >
               <Droplets size={16} className="text-white" />
             </div>
@@ -191,7 +191,7 @@ export default function App() {
           <div className="grid grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, #0560a6, #06b6d4)" }}>
+                <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: BRAND_GRADIENT }}>
                   <Droplets size={14} className="text-white" />
                 </div>
                 <span className="text-white" style={{ fontWeight: 700 }}>JalSeva</span>
